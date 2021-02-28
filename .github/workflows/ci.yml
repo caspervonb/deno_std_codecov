@@ -40,7 +40,10 @@ jobs:
         run: deno upgrade --canary
 
       - name: Test
-        run: deno test --unstable --allow-all
+        run: |
+          deno test --coverage=./cov --unstable --allow-all
+          deno coverage --lcov ./cov > cov.lcov
+          bash <(curl -s https://codecov.io/bash) -t secrets.CODECOV_TOKEN
 
   lint:
     runs-on: ubuntu-latest
